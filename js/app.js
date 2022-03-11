@@ -1,5 +1,6 @@
 let posts=[ ];
 
+
 const likedPostsId = [];
 const reportedPostsId = [];
 
@@ -18,6 +19,7 @@ const isLiked = (id) => {
 const addToLiked = (id) => {
     likedPostsId.push(id); 
     showPosts(posts);
+    displayLikedPosts(id);
 };
 
 const reportPost = (id) => {
@@ -25,33 +27,12 @@ const reportPost = (id) => {
     const remainingPosts = posts.filter((post) => !reportedPostsId.includes(post.id));
     showPosts(remainingPosts);
 };
-
 const displayContent = (text) => {
     return text.length < 30 ? text.slice(0, 30) : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
 };
 
-const switchTab = (id) => {
-    if (id === "posts") {
-        document.getElementById( "posts" ).style.display = "grid";
-        document.getElementById( "liked" ).style.display = "none";
-        document.getElementById( "reported" ).style.display = "none";
-    } else if (id === "liked") {
-        document.getElementById( "liked" ).style.display = "block";
-        document.getElementById( "posts" ).style.display = "none";
-        document.getElementById( "reported" ).style.display = "none";
-
-        displayLikedPosts();
-    } else {
-        document.getElementById( "reported" ).style.display = "block";
-        document.getElementById( "posts" ).style.display = "none";
-        document.getElementById( "liked" ).style.display = "none";
-
-        displayReportedPosts();
-    }
-};
 
 const createPost = (post) => {
-  console.log(post);
     const image = post.image;
     const div = document.createElement( "article" );
     div.classList.add( "post" );
@@ -143,11 +124,13 @@ const showPosts = (posts) => {
     });
 };
 
-const displayLikedPosts = () => {
+const displayLikedPosts = (id) => {
     const likedPosts = getLikedPosts();
-    likedPosts.forEach((post) => {
-        const div = createPost(post);
-        document.getElementById( "liked" ).appendChild(div);
+   const likedPostIndex = likedPosts.findIndex(res => res.id == id);
+   const getunickpost = likedPosts.splice(likedPostIndex,1);
+   getunickpost.forEach((post) => {
+  const div = createPost(post);
+  document.getElementById( "liked" ).appendChild(div);
     });
 };
 
@@ -164,5 +147,24 @@ const loadPosts = async () =>{
   posts = await data.json();
   showPosts(posts);
 }
+
+const switchTab = (id) => {
+  if (id === "posts") {
+      document.getElementById( "posts" ).style.display = "grid";
+      document.getElementById( "liked" ).style.display = "none";
+      document.getElementById( "reported" ).style.display = "none";
+  } else if (id === "liked") {
+      document.getElementById( "liked" ).style.display = "block";
+      document.getElementById( "posts" ).style.display = "none";
+      document.getElementById( "reported" ).style.display = "none";
+  } else {
+      document.getElementById( "reported" ).style.display = "block";
+      document.getElementById( "posts" ).style.display = "none";
+      document.getElementById( "liked" ).style.display = "none";
+
+      displayReportedPosts();
+  }
+};
+
 
 loadPosts();
