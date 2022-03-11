@@ -26,6 +26,7 @@ const reportPost = (id) => {
     reportedPostsId.push(id);
     const remainingPosts = posts.filter((post) => !reportedPostsId.includes(post.id));
     showPosts(remainingPosts);
+    displayReportedPosts(id);
 };
 const displayContent = (text) => {
     return text.length < 30 ? text.slice(0, 30) : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
@@ -134,9 +135,11 @@ const displayLikedPosts = (id) => {
     });
 };
 
-const displayReportedPosts = () => {
+const displayReportedPosts = (id) => {
     const reportedPosts = getReportedPosts();
-    posts.forEach((post) => {
+    const reportedIndex = reportedPosts.findIndex(res => res.id == id);
+   const getunickpost = reportedPosts.splice(reportedIndex,1);
+   getunickpost.forEach((post) => {
         const div = createPost(post);
         document.getElementById( "reported" ).appendChild(div);
     });
@@ -162,7 +165,7 @@ const switchTab = (id) => {
       document.getElementById( "posts" ).style.display = "none";
       document.getElementById( "liked" ).style.display = "none";
 
-      displayReportedPosts();
+      // displayReportedPosts();
   }
 };
 
