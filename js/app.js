@@ -156,18 +156,23 @@ const switchTab = (id) => {
       document.getElementById( "posts" ).style.display = "grid";
       document.getElementById( "liked" ).style.display = "none";
       document.getElementById( "reported" ).style.display = "none";
+      hiddenFromother('block')
   } else if (id === "liked") {
       document.getElementById( "liked" ).style.display = "block";
       document.getElementById( "posts" ).style.display = "none";
       document.getElementById( "reported" ).style.display = "none";
-  } else {
+      hiddenFromother("none");
+  }else if(id === "reported") {
       document.getElementById( "reported" ).style.display = "block";
       document.getElementById( "posts" ).style.display = "none";
       document.getElementById( "liked" ).style.display = "none";
-
-      // displayReportedPosts();
+      hiddenFromother("none");
   }
-};
 
+};
+// this section is question and ans section..
+let hiddenFromother = (dis) =>{
+  document.getElementById('question').style.display = dis;
+}
 
 loadPosts();
